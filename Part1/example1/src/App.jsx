@@ -6,16 +6,21 @@ const Hello = ({ name, age }) => {
   )
 }
 
-function App() {
+const Footer = () => {
+  return (
+    <div>
+      greeting app created by <a href="https://github.com/JoseMarioCarranza">Aperta</a>
+    </div>
+  )
+}
 
-  const name = 'Peter'
-  const age = 10
+function App() {
 
   return (
     <div>
       <h1>Greetings</h1>
       <Hello name='José' age={11 + 19} />
-      <Hello name={name} age={age} />
+      <Footer />
     </div>
   )
 }
