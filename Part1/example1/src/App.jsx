@@ -1,22 +1,21 @@
-const Hello = () => {
+const Hello = ({ name, age }) => {
   return (
     <div>
-      <p>Hello World</p>
+      <p>Hello {name}, you are {age} years old</p>
     </div>
   )
 }
 
 function App() {
 
+  const name = 'Peter'
+  const age = 10
+
   return (
     <div>
       <h1>Greetings</h1>
-      <Hello />
-      <Hello />
-      <Hello />
-      <Hello />
-      <Hello />
-      <Hello />
+      <Hello name='José' age={11 + 19} />
+      <Hello name={name} age={age} />
     </div>
   )
 }
