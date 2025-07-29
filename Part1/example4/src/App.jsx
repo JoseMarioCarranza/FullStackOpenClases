@@ -17,9 +17,20 @@ const Button = (props) => {
 const App = () => {
   const [counter, setCounter] = useState(0)
 
-  const increaseByOne = () => setCounter(counter + 1)
-  const setToZero = () => setCounter(0)
-  const decreaseByOne = () => setCounter(counter - 1)
+  console.log('rendering with counter value', counter);
+
+  const increaseByOne = () => {
+    console.log('Increasing, value before', counter);
+    setCounter(counter + 1)
+  }
+  const setToZero = () => {
+    console.log('Resetting to zero, value before', counter);
+    setCounter(0)
+  }
+  const decreaseByOne = () => {
+    console.log('decreasing, value before', counter);
+    setCounter(counter - 1)
+  }
 
   return (
     <div>
