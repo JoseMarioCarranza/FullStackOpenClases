@@ -5,7 +5,7 @@ function App({ notes }) {
     <>
       <h1>Notes</h1>
       <ul>
-        {notes.map(n => <li>{n.content}</li>)}
+        {notes.map(n => <li key={n.id}>{n.content}</li>)}
       </ul>
     </>
   )
