@@ -1,3 +1,4 @@
+import Note from "./components/Note/Note"
 
 function App({ notes }) {
 
@@ -5,7 +6,7 @@ function App({ notes }) {
     <>
       <h1>Notes</h1>
       <ul>
-        {notes.map(n => <li key={n.id}>{n.content}</li>)}
+        {notes.map(n => <Note key={n.id} note={n} />)}
       </ul>
     </>
   )
