@@ -30,14 +30,16 @@ function App() {
       important: Math.random() < 0.5
     }
 
-    setNotes(notes.concat(noteObject))
-    setNewNote('')
+    axios
+      .post('http://localhost:3001/notes', noteObject)
+      .then(response => {
+        console.log(response);
+        setNotes(notes.concat(response.data))
+        setNewNote('')
+      })
   }
 
-  const handleNoteChange = (event) => {
-    console.log(event.target.value);
-    setNewNote(event.target.value)
-  }
+  const handleNoteChange = (event) => { setNewNote(event.target.value) }
 
   const notesToShow = showAll
     ? notes
