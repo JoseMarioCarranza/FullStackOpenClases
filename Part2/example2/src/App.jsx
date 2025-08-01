@@ -25,7 +25,7 @@ function App() {
     event.preventDefault()
 
     const noteObject = {
-      id: notes.length + 1,
+      id: String(notes.length + 1),
       content: newNote,
       important: Math.random() < 0.5
     }
@@ -37,6 +37,17 @@ function App() {
         setNotes(notes.concat(response.data))
         setNewNote('')
       })
+  }
+
+  const toggleImportantOf = (id) => {
+    const url = `http://localhost:3001/notes/${id}`
+    const note = notes.find(n => n.id === id)
+    const changedNote = { ...note, important: !note.important }
+
+    axios.put(url, changedNote).then(response => {
+      setNotes(notes.map(n => n.id !== id ? n : response.data))
+    })
+
   }
 
   const handleNoteChange = (event) => { setNewNote(event.target.value) }
@@ -52,7 +63,7 @@ function App() {
         show {showAll ? 'important' : 'all'}
       </button>
       <ul>
-        {notesToShow.map(n => <Note key={n.id} note={n} />)}
+        {notesToShow.map(n => <Note key={n.id} note={n} toggleImportance={() => toggleImportantOf(n.id)} />)}
       </ul>
       <form onSubmit={addNote}>
         <input
