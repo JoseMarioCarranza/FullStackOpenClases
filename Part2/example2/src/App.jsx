@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import Note from "./components/Note/Note"
 import noteService from "./services/notes"
 import Notification from "./components/Notification/Notification"
+import Footer from "./components/Footer/Footer"
 
 function App() {
 
@@ -82,6 +83,7 @@ function App() {
         />
         <button type="submit">save</button>
       </form>
+      <Footer />
     </>
   )
 }
