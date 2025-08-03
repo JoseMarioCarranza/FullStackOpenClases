@@ -8,5 +8,8 @@
   },
   "author": "Aperta",
   "license": "MIT",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
 }
