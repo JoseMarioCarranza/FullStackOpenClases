@@ -88,6 +88,18 @@ app.delete('/api/notes/:id', (req, res) => {
     res.status(204).end()
 })
 
+app.put('/api/notes/:id', (req, res) => {
+    const id = Number(req.params.id)
+
+    const note = notes.find(n => n.id === id)
+
+    const updatedNote = { ...note, important: !note.important }
+
+    notes = notes.map(n => n.id !== id ? n : updatedNote)
+
+    res.json(updatedNote)
+})
+
 app.use(unknownEndpoint)
 
 const PORT = process.env.PORT || 3001
