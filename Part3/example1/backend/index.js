@@ -1,30 +1,9 @@
-const mongoose = require('mongoose')
+require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
+const Note = require('./models/note')
 
 const app = express()
-
-const password = process.argv[2]
-
-const url = `mongodb+srv://Aperta:${password}@cluster0.aq25o0n.mongodb.net/noteApp?retryWrites=true&w=majority&appName=Cluster0`
-
-mongoose.set('strictQuery', false)
-mongoose.connect(url)
-
-const noteSchema = new mongoose.Schema({
-    content: String,
-    important: Boolean,
-})
-
-noteSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-        returnedObject.id = returnedObject._id.toString()
-        delete returnedObject._id
-        delete returnedObject.__v
-    }
-})
-
-const Note = mongoose.model('Note', noteSchema)
 
 const requestLogger = (req, res, next) => {
     console.log('Method:', req.method)
@@ -42,24 +21,6 @@ app.use(express.json())
 app.use(requestLogger)
 app.use(cors())
 app.use(express.static('dist'))
-
-let notes = [
-    {
-        id: 1,
-        content: 'HTML is easy',
-        important: true
-    },
-    {
-        id: 2,
-        content: 'Browser can execute only JavaScript',
-        important: true
-    },
-    {
-        id: 3,
-        content: 'GET and POST are the most important methods of HTTP protocol',
-        important: true
-    }
-]
 
 app.get('/', (req, res) => {
     res.send('<h1>Hello World!</h1>')
