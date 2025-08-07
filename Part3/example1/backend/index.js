@@ -42,29 +42,19 @@ app.post('/api/notes', (req, res) => {
         })
     }
 
-    const maxId = notes.length > 0
-        ? Math.max(...notes.map(n => n.id))
-        : 0
-
-    const note = {
-        "id": maxId + 1,
+    const note = new Note({
         "content": body.content,
         "important": Boolean(body.important) || false
-    }
+    })
 
-    notes = notes.concat(note)
-
-    res.json(note)
+    note.save().then(savedNote => {
+        res.json(savedNote)
+    })
 })
 
 app.get('/api/notes/:id', (req, res) => {
     const id = req.params.id
-    const note = notes.find(n => n.id === Number(id))
-    if (note) {
-        res.json(note)
-    } else {
-        res.status(404).end()
-    }
+    Note.findById(id).then(note => res.json(note))
 })
 
 app.delete('/api/notes/:id', (req, res) => {
