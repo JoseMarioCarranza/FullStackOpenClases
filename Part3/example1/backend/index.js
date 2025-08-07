@@ -77,23 +77,29 @@ app.get('/api/notes/:id', (req, res, next) => {
         .catch(error => next(error))
 })
 
-app.delete('/api/notes/:id', (req, res) => {
+app.delete('/api/notes/:id', (req, res, next) => {
     const id = req.params.id
-    notes = notes.filter(n => n.id !== Number(id))
-
-    res.status(204).end()
+    Note.findByIdAndDelete(id)
+        .then(result => {
+            res.status(204).end()
+        })
+        .catch(error => next(error))
 })
 
-app.put('/api/notes/:id', (req, res) => {
-    const id = Number(req.params.id)
+app.put('/api/notes/:id', (req, res, next) => {
+    const id = req.params.id
+    const body = req.body
 
-    const note = notes.find(n => n.id === id)
+    const note = {
+        content: body.content,
+        important: body.important
+    }
 
-    const updatedNote = { ...note, important: !note.important }
-
-    notes = notes.map(n => n.id !== id ? n : updatedNote)
-
-    res.json(updatedNote)
+    Note.findByIdAndUpdate(id, note, { new: true })
+        .then(updatedNote => {
+            res.json(updatedNote)
+        })
+        .catch(error => next(error))
 })
 
 app.use(unknownEndpoint)
