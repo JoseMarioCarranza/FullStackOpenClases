@@ -6,7 +6,7 @@ notesRouter.get('/', async (req, res) => {
     res.json(notes)
 })
 
-notesRouter.post('/', (req, res, next) => {
+notesRouter.post('/', async (req, res, next) => {
 
     const body = req.body
 
@@ -15,9 +15,8 @@ notesRouter.post('/', (req, res, next) => {
         "important": Boolean(body.important) || false
     })
 
-    note.save()
-        .then(savedNote => { res.json(savedNote) })
-        .catch(error => next(error))
+    const savedNote = await note.save()
+    res.status(201).json(savedNote)
 })
 
 notesRouter.get('/:id', (req, res, next) => {
