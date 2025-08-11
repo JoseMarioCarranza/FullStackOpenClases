@@ -6,46 +6,51 @@ notesRouter.get('/', async (req, res) => {
     res.json(notes)
 })
 
-notesRouter.post('/', async (req, res, next) => {
+notesRouter.post('/', async (req, res) => {
 
-    const body = req.body
+    const { content, important } = req.body
+
+    if (!content) {
+        const err = new Error('Content is required')
+        err.status = 400
+        throw err
+    }
 
     const note = new Note({
-        "content": body.content,
-        "important": Boolean(body.important) || false
+        "content": content,
+        "important": Boolean(important) || false
     })
 
-    try {
-        const savedNote = await note.save()
-        res.status(201).json(savedNote)
-    } catch (exception) {
-        next(exception)
-    }
+    const savedNote = await note.save()
+    res.status(201).json(savedNote)
+
 })
 
-notesRouter.get('/:id', async (req, res, next) => {
+notesRouter.get('/:id', async (req, res) => {
 
-    try {
-        const note = await Note.findById(req.params.id)
+    const note = await Note.findById(req.params.id)
 
-        if (note) {
-            res.json(note)
-        } else {
-            res.status(404).end()
-        }
-
-    } catch (exception) {
-        next(exception)
+    if (!note) {
+        const err = new Error('id not found')
+        err.status = 404
+        throw err
     }
+
+    res.json(note)
+
 })
 
-notesRouter.delete('/:id', async (req, res, next) => {
-    try {
-        await Note.findByIdAndDelete(req.params.id)
-        res.status(204).end()
-    } catch (exception) {
-        next(exception)
+notesRouter.delete('/:id', async (req, res) => {
+
+    const deleted = await Note.findByIdAndDelete(req.params.id)
+
+    if (!deleted) {
+        const err = new Error('Note not found')
+        err.status = 404
+        throw err
     }
+
+    res.status(204).end()
 })
 
 notesRouter.put('/:id', (req, res, next) => {
