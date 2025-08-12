@@ -1,7 +1,11 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
-    username: String,
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
     name: String,
     passwordHash: String,
     notes: [
@@ -9,7 +13,7 @@ const userSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Note'
         }
-    ]
+    ],
 })
 
 userSchema.set('toJSON', {
@@ -21,4 +25,8 @@ userSchema.set('toJSON', {
     }
 })
 
-module.exports = mongoose.model('User', userSchema)
+userSchema.index({ username: 1 }, { unique: true })
+
+const User = mongoose.model('User', userSchema)
+
+module.exports = User
