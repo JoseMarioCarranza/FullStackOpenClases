@@ -25,7 +25,6 @@ userSchema.set('toJSON', {
     }
 })
 
-userSchema.index({ username: 1 }, { unique: true })
 
 const User = mongoose.model('User', userSchema)
 

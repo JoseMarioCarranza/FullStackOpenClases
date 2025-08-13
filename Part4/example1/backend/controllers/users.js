@@ -12,7 +12,7 @@ usersRouter.post('/', async (request, response, next) => {
         const savedUser = await user.save()
         response.status(201).json(savedUser)
     } catch (error) {
-        next(error) // <- muy importante para que tu errorHandler responda 400 en duplicados
+        next(error)
     }
 })
 
