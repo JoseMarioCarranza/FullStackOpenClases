@@ -4,11 +4,11 @@ import Note from "./components/Note/Note"
 import Notification from "./components/Notification/Notification"
 import Footer from "./components/Footer/Footer"
 import LoginForm from "./components/LoginForm/LoginForm"
+import Togglable from "./components/Togglable/Togglable"
 
 import noteService from "./services/notes"
 import loginService from "./services/login"
-
-
+import NoteForm from "./components/NoteForm/NoteForm"
 
 function App() {
 
@@ -116,29 +116,6 @@ function App() {
     </form>
   )
 
-  const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
-    const showWhenVisible = { display: loginVisible ? '' : 'none' }
-
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>log in</button>
-        </div>
-        <div style={showWhenVisible}>
-          <LoginForm
-            handleLogin={handleLogin}
-            username={username}
-            setUsername={setUsername}
-            password={password}
-            setPassword={setPassword}
-          />
-          <button onClick={() => setLoginVisible(false)}>cancel</button>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <>
       <h1>Notes</h1>
@@ -146,7 +123,15 @@ function App() {
 
       {
         user === null
-          ? loginForm()
+          ? <Togglable buttonLabel='login'>
+            <LoginForm
+              handleLogin={handleLogin}
+              username={username}
+              setUsername={setUsername}
+              password={password}
+              setPassword={setPassword}
+            />
+          </Togglable>
           : <div>
             <p>{user.name} logged-in</p>
           </div>
@@ -159,7 +144,17 @@ function App() {
         {notesToShow.map(n => <Note key={n.id} note={n} toggleImportance={() => toggleImportantOf(n.id)} />)}
       </ul>
 
-      {user !== null && noteForm()}
+      {
+        user === null
+          ? <></>
+          : <Togglable buttonLabel={'new note'}>
+            <NoteForm
+              onSubmit={addNote}
+              handleNoteChange={handleNoteChange}
+              value={newNote}
+            />
+          </Togglable>
+      }
 
       <Footer />
     </>
