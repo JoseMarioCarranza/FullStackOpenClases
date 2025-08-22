@@ -47,7 +47,7 @@ function App() {
       .update(id, changedNote).then(returnedNote => {
         setNotes(notes.map(n => n.id !== id ? n : returnedNote))
       })
-      .catch(error => {
+      .catch(() => {
         setErrorMessage(
           `the note: '${note.content}' was already deleted from server`
         )
@@ -77,6 +77,7 @@ function App() {
       setPassword('')
     } catch (exception) {
       setErrorMessage('Wrong credentials')
+      console.log(exception)
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
